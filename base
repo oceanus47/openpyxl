@@ -1,0 +1,27 @@
+import openpyxl
+from openpyxl.styles.fonts import Font
+import datetime
+import calendar
+import locale
+
+wb = openpyxl.Workbook()
+ws = wb['Sheet']
+year = 2022
+mon = 5
+
+# 日にちを入れる
+locale.setlocale(locale.LC_TIME, 'ja_JP')
+day = calendar.monthrange(year, mon)[1]
+dayE = int(day) + 1
+for day in range(1, dayE):
+   dt = datetime.date(year, mon, day)
+   dow = dt.strftime('%a')
+   ws.cell(row=1, column=day).value = '{}日({})'.format(day, dow)
+   if dow == '土':
+       ws.cell(row=1, column=day).font = Font(color='0070C0')
+   elif dow == '日':
+       ws.cell(row=1, column=day).font = Font(color='FF0000')
+   else:
+       ws.cell(row=1, column=day)
+       
+wb.save('note.xlsx')
